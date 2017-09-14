@@ -19,7 +19,8 @@ import re
 
 
 # Inputs from the user
-full_url = input('Enter url link from which pdf files to be downloaded: ')
+def inputs():
+    return input("Enter url link from which pdf files to be downloaded: ")
 
 
 # Checks domain name
@@ -40,7 +41,7 @@ def get_url(url):
     pdflink = []
 
     for link in links:
-        if '.pdf' in re.findall(".pdf", link['href']):
+        if '.pdf' in link['href']:
             pdflink.append(link['href'])
 
     return pdflink
@@ -48,9 +49,12 @@ def get_url(url):
 
 # Allows downloading of pdf files using extracted .pdf links
 def download():
+    full_url = inputs()
     pdflinks = get_url(full_url)
     servername = checks_for_domain(full_url)
     lengthofpdflinks = len(pdflinks)
+
+    checkflag = 0
 
     for i in range(lengthofpdflinks):
         if pdflinks[i].startswith('/.'):
@@ -68,7 +72,20 @@ def download():
             file.write(chunk)
 
         file.close()
+        checkflag += 1
+
+    if checkflag is 0:
+        print('\nNo pdf links found. Enter a new link.')
+    else:
+        print('\nAll files downloaded successfully! :)')
 
 
 # Download function is called to finally download the pdf files to the computer
-download()
+while True:
+    try:
+        download()
+        prompt = input("\nDo you want to continue[press any key] or quit the program[N/n]? ")
+        if prompt == "N" or prompt == "n":
+            break
+    except Exception:
+        print('Error! Please enter the link again. Sorry for inconvenience.')

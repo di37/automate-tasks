@@ -59,7 +59,11 @@ def get_pages(keyword, max_pages, city):
 
 # Definite loop to check if the user wants to obtain company names again
 while True:
-    inputs()
-    prompt = input("\nDo you want to continue[Y/y] or quit the program[N/n]? ")
-    if prompt == "N" or prompt == "n":
-        break
+    try:
+        inputs()
+        prompt = input("\nDo you want to continue[press any key] or quit the program[N/n]? ")
+        if prompt == "N" or prompt == "n":
+            break
+    except Exception:
+        print('Error! Please enter the inputs again. Sorry for inconvenience.')
+
