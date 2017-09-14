@@ -1,20 +1,21 @@
 #! /usr/bin/python3
 
-'''
-    Author of this program: Doula Isham Rashik
-    Date Published: 14/09/2017
 
-	Note: Only to be used for educational purposes.
+# Author of this program: Doula Isham Rashik
+# Date Published: 14/09/2017
+#
+# Note: Only to be used for educational purposes.
+#
+# Description: This program allows to download all pdf files automatically from a certain web page.
+#
+# Input: Link of the web page from which pdf links to be extracted
+# Output: Downloaded pdf files in the folder
 
-	Description: This program allows to download all pdf files automatically from a certain web page.
-
-	Input: Link of the web page from which pdf links to be extracted
-	Output: Downloaded pdf files in the folder
-'''
 
 # All the required libraries are imported
-import requests, re
+import requests
 from bs4 import BeautifulSoup
+import re
 
 
 # Inputs from the user
@@ -35,8 +36,8 @@ def checks_for_domain(main_url):
 def get_url(url):
     r = requests.get(url)
     soup = BeautifulSoup(r.content, 'lxml')
-    links = soup.find_all('a', href=re.compile('([A-Za-z0-9_:()])+'))
-    pdflink =[]
+    links = soup.find_all('a', href=re.compile('[A-Za-z0-9_:()]+'))
+    pdflink = []
 
     for link in links:
         if '.pdf' in re.findall(".pdf", link['href']):
@@ -44,26 +45,28 @@ def get_url(url):
 
     return pdflink
 
+
 # Allows downloading of pdf files using extracted .pdf links
 def download():
     pdflinks = get_url(full_url)
-    serverName = checks_for_domain(full_url)
-    lengthOfpdflinks = len(pdflinks)
+    servername = checks_for_domain(full_url)
+    lengthofpdflinks = len(pdflinks)
 
-    for i in range(lengthOfpdflinks):
+    for i in range(lengthofpdflinks):
         if pdflinks[i].startswith('/.'):
-            res = requests.get(serverName + pdflinks[i][len('/.'):])
+            res = requests.get(servername + pdflinks[i][len('/.'):])
         elif pdflinks[i].startswith('http://') or pdflinks[i].startswith('https://'):
             res = requests.get(pdflinks[i])
         else:
-            res = requests.get(serverName + pdflinks[i])
+            res = requests.get(servername + pdflinks[i])
 
-        playFile = open('File' + str(i) + '.pdf', 'wb')
+        extractfilename = re.findall(r'[A-Za-z0-9_().]+', pdflinks[i])
+
+        file = open(extractfilename[len(extractfilename) - 1], 'wb')
 
         for chunk in res.iter_content(len(res.text)):
-            playFile.write(chunk)
+            file.write(chunk)
 
-        playFile.close()
+        file.close()
 
 download()
-
