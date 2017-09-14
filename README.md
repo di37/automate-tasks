@@ -1,0 +1,1 @@
+Making Python projects for automating tasks to make life of pc users easy and save time spent on doing tasks manually. Feel free to help me out to improve the codes - CompanyNameFinder.py and pdfdownloader.py which I have been focusing the most. More to come in the future :)
