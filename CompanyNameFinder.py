@@ -1,17 +1,17 @@
 #! /usr/bin/python3
 
-'''
-    Author of this program: Doula Isham Rashik
-    Date Published: 14/09/2017
 
-    Note: Only to be used for educational purposes.
+# Author of this program: Doula Isham Rashik
+# Date Published: 14/09/2017
 
-    Description: This piece of program allows to obtain the names of the companies
-    in UAE within a specific city from yellow pages.
+# Note: Only to be used for educational purposes.
 
-    Input: Keyword/Catagory, maximum number of pages to be scraped, City
-    Output: List of company names from specific city
-'''
+# Description: This piece of program allows to obtain the names of the companies
+# in UAE within a specific city from yellow pages.
+
+# Input: Keyword/Catagory, maximum number of pages to be scraped, City
+# Output: List of company names from specific city
+
 
 # Importing modules that will allow access to the webpages
 import requests
