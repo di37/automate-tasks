@@ -69,4 +69,6 @@ def download():
 
         file.close()
 
+
+# Download function is called to finally download the pdf files to the computer
 download()
