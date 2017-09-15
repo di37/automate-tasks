@@ -3,12 +3,12 @@
 
 # Author of this program: Doula Isham Rashik
 # Date Published: 14/09/2017
-
+#
 # Note: Only to be used for educational purposes.
-
+#
 # Description: This piece of program allows to obtain the names of the companies
 # in UAE within a specific city from yellow pages.
-
+#
 # Input: Keyword/Catagory, maximum number of pages to be scraped, City
 # Output: List of company names from specific city
 
@@ -46,15 +46,17 @@ def get_pages(keyword, max_pages, city):
         print('\nList of companies in ' + city + ' as follows: \n')
         for company in companies:
             print(str(i) + '. ' + company)
-            i += 1
+            i+=1
 
     elif out == 'S' or out == 's':
-        playFile = open(keyword + '-companies-' + city + '.txt', 'w')
-        playFile.write('\nList of companies in ' + city + ' as follows: \n\n')
+        file = open(keyword + '-companies-' + city + '.txt', 'w')
+        file.write('\nList of companies in ' + city + ' as follows: \n\n')
+
         for company in companies:
-            playFile.write(str(i) + '. ' + company + '\n')
-            i += 1
-        playFile.close()
+            file.write(str(i) + '. ' + company + '\n')
+            i+=1
+
+        file.close()
 
 
 # Definite loop to check if the user wants to obtain company names again

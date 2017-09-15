@@ -25,12 +25,11 @@ def inputs():
 
 # Checks domain name
 def checks_for_domain(main_url):
-    if '.org/' in main_url:
-        return main_url[:main_url.find('.org/') + len('.org/') - 1]
-    elif '.edu/' in main_url:
-        return main_url[:main_url.find('.edu/') + len('.edu/') - 1]
-    else:
-        return main_url[:main_url.find('.com/') + len('.com/') - 1]
+    domains = ['.org/', '.edu/', '.com/']
+
+    for domain in domains:
+        if domain in main_url:
+            return main_url[:main_url.find(domain) + len(domain) - 1]
 
 
 # This function allows to open HTML file and parse it followed by extracting .pdf links
@@ -50,11 +49,8 @@ def get_url(url):
 # Allows downloading of pdf files using extracted .pdf links
 def download():
     full_url = inputs()
-    pdflinks = get_url(full_url)
-    servername = checks_for_domain(full_url)
+    pdflinks, servername = get_url(full_url), checks_for_domain(full_url)
     lengthofpdflinks = len(pdflinks)
-
-    checkflag = 0
 
     for i in range(lengthofpdflinks):
         if pdflinks[i].startswith('/.'):
@@ -67,17 +63,14 @@ def download():
         extractfilename = re.findall(r'[A-Za-z0-9_().]+', pdflinks[i])
 
         file = open(extractfilename[len(extractfilename) - 1], 'wb')
-
-        for chunk in res.iter_content(len(res.text)):
-            file.write(chunk)
-
+        file.write(res.content)
         file.close()
-        checkflag += 1
 
-    if checkflag is 0:
-        print('\nNo pdf links found. Enter a new link.')
+    if lengthofpdflinks is 0:
+        print('\nNo pdf links found. Enter a new link if you wish to continue.')
     else:
         print('\nAll files downloaded successfully! :)')
+        print('No. of files downloaded: ' + str(lengthofpdflinks))
 
 
 # Download function is called to finally download the pdf files to the computer
