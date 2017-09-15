@@ -25,7 +25,7 @@ def inputs():
 
 # Checks domain name
 def checks_for_domain(main_url):
-    domains = ['.org/', '.edu/', '.com/']
+    domains = ['.org/', '.edu/', '.com/', '.in/']
 
     for domain in domains:
         if domain in main_url:
@@ -37,40 +37,43 @@ def get_url(url):
     r = requests.get(url)
     soup = BeautifulSoup(r.content, 'lxml')
     links = soup.find_all('a', href=re.compile('[A-Za-z0-9_:()]+'))
-    pdflink = []
+    pdflinks = []
 
     for link in links:
         if '.pdf' in link['href']:
-            pdflink.append(link['href'])
+            pdflinks.append(link['href'])
 
-    return pdflink
+    return pdflinks
 
 
 # Allows downloading of pdf files using extracted .pdf links
 def download():
     full_url = inputs()
     pdflinks, servername = get_url(full_url), checks_for_domain(full_url)
-    lengthofpdflinks = len(pdflinks)
 
-    for i in range(lengthofpdflinks):
-        if pdflinks[i].startswith('/.'):
-            res = requests.get(servername + pdflinks[i][len('/.'):])
-        elif pdflinks[i].startswith('http://') or pdflinks[i].startswith('https://'):
-            res = requests.get(pdflinks[i])
+    # To perform logical check on how many files downloaded, check flag is declared and initialized
+    # It will count how many files are downloaded.
+    check = 0
+    for pdflink in pdflinks:
+        if pdflink.startswith('/.'):
+            res = requests.get(servername + pdflink[len('/.'):])
+        elif pdflink.startswith('http://') or pdflink.startswith('https://'):
+            res = requests.get(pdflink)
         else:
-            res = requests.get(servername + pdflinks[i])
+            res = requests.get(servername + pdflink)
 
-        extractfilename = re.findall(r'[A-Za-z0-9_().]+', pdflinks[i])
+        extractfilename = re.findall(r'[A-Za-z0-9_().\s]+', pdflink)
 
         file = open(extractfilename[len(extractfilename) - 1], 'wb')
         file.write(res.content)
         file.close()
+        check += 1
 
-    if lengthofpdflinks is 0:
+    if check is 0:
         print('\nNo pdf links found. Enter a new link if you wish to continue.')
     else:
         print('\nAll files downloaded successfully! :)')
-        print('No. of files downloaded: ' + str(lengthofpdflinks))
+        print('No. of files downloaded:', check)
 
 
 # Download function is called to finally download the pdf files to the computer

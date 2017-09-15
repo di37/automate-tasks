@@ -40,21 +40,18 @@ def get_pages(keyword, max_pages, city):
             companies.append(item.contents[3].text.strip(' '))
 
     out = input("\nDisplay the companies in terminal[T/t] or store and save them in a file[S/s]? ")
-    i = 1
 
     if out == 'T' or out == 't':
         print('\nList of companies in ' + city + ' as follows: \n')
         for company in companies:
-            print(str(i) + '. ' + company)
-            i+=1
+            print(str(companies.index(company)+1) + '. ' + company)
 
     elif out == 'S' or out == 's':
         file = open(keyword + '-companies-' + city + '.txt', 'w')
         file.write('\nList of companies in ' + city + ' as follows: \n\n')
 
         for company in companies:
-            file.write(str(i) + '. ' + company + '\n')
-            i+=1
+            file.write(str(companies.index(company)+1) + '. ' + company + '\n')
 
         file.close()
 
@@ -68,4 +65,3 @@ while True:
             break
     except Exception:
         print('Error! Please enter the inputs again. Sorry for inconvenience.')
-
